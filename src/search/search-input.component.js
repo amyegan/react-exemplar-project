@@ -1,19 +1,26 @@
 import React from 'react';
-import SearchResults from '../results/search-results.component';
 
-const exampleResults = [
-  {title: "learn react", description: "article on learning react"},
-  {title: "learn jsx", description: "article on learning jsx"},
-  {title: "learn react routing", description: "article on learning react routing"}
-]
+const resourceUri = 'https://reqres.in/';
+
+const buttonStyle = {
+  backgroundColor: 'aliceblue'
+}
 
 export default class SearchInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       queryString: '',
-      searchSubmitted: false
+      searchSubmitted: false,
+      showResults: false,
+      searchResults: null
     };
+  }
+
+  fetchBooks = () => {
+    fetch(`${resourceUri}api/books`)
+      .then(res => res.json())
+      .then(json => this.props.populateResults(json));
   }
 
   render() {
@@ -23,14 +30,8 @@ export default class SearchInput extends React.Component {
           <label>Search for a topic:
             <input value={this.state.queryString} onChange={this.onSearchInputChange} />
           </label>
+          <button style={buttonStyle} type="submit" disabled={this.buttonDisabled()}>Search</button>
         </form>
-        <button type="submit" disabled={this.buttonDisabled()}>Search</button>
-        <p>Query String is {this.state.queryString}</p>
-
-        <hr />
-
-        {this.state.searchSubmitted && <SearchResults results={exampleResults}/>}
-
       </div>      
     );
   }
@@ -45,6 +46,7 @@ export default class SearchInput extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    this.fetchBooks();
     this.setState({ searchSubmitted: true });
   }
 }

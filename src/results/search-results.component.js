@@ -1,17 +1,44 @@
 import React from 'react';
 
-export default function SearchResults(props) {
-  return (
-    <div>
-      <ul>
-        {props.results.map(renderSearchResult)}
-      </ul>
-    </div>
-  );
+export default class SearchResults extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    console.log('render search results');
+  }
+  
+  // componentDidMount() {
+  //   console.log('component did mount');
+  // }
+
+  // componentDidUpdate() {
+  //   console.log('component did update');
+  // }
+
+  // componentWillUnmount() {
+  //   console.log('component will unmount');
+  // }
+
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.results !== nextProps.results;
+  // }
+
+  // componentDidUpdate() {
+  //   console.log('component did update');
+  // }
+
+  render() {
+    console.log('render');
+    console.log(this.props.results);
+    return (
+        <ul>
+          {this.props.results.map(renderSearchResult)}
+        </ul>
+    );
+  }
 }
 
 function renderSearchResult(result) {
   return (
-    <li>{result.title}: {result.description}</li>
+    <li key={result.id}>{result.name}: {result.year}</li>
   );
 }
